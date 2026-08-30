@@ -1,6 +1,6 @@
 package auth_test
 
-import(
+import (
 	"github.com/bootdotdev/learn-cicd-starter/internal/auth"
 	"net/http"
 	"testing"
@@ -8,7 +8,7 @@ import(
 
 func TestGetAPIKey(t *testing.T) {
 	type test struct {
-		name    string 
+		name    string
 		headers http.Header
 		want    string
 		wantErr bool
@@ -20,7 +20,7 @@ func TestGetAPIKey(t *testing.T) {
 			headers: http.Header{
 				"Authorization": []string{"ApiKey asjdiqwodiajdskal"},
 			},
-			want: "asjdiqwodiajdskal",
+			want:    "asjdiqwodiajdskal",
 			wantErr: false,
 		},
 		{
@@ -28,7 +28,7 @@ func TestGetAPIKey(t *testing.T) {
 			headers: http.Header{
 				"Authorization": []string{"ApiKey"},
 			},
-			want: "",
+			want:    "",
 			wantErr: true,
 		},
 	}
@@ -50,4 +50,3 @@ func TestGetAPIKey(t *testing.T) {
 		})
 	}
 }
-
