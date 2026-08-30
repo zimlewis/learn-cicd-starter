@@ -1,7 +1,19 @@
-FROM --platform=linux/amd64 debian:stable-slim
+# Build
+FROM golang:1.27.0-alpine AS build-stage
 
-RUN apt-get update && apt-get install -y ca-certificates
+RUN apk add --no-cache gcc g++ make libwebp-dev
+ENV CGO_ENABLED=1 GOOS=linux GOARCH=amd64
 
-ADD notely /usr/bin/notely
+WORKDIR /app
+COPY go.mod go.sum .
+RUN go mod download
 
-CMD ["notely"]
+COPY ./ .
+RUN go build -o server .
+
+# Run
+FROM alpine:3.22.4 AS run
+
+COPY --from=build-stage /app/server .
+
+CMD ["./server"]
