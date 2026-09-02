@@ -12,9 +12,9 @@ env:
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
-  build-and-push-image-to-google-ar-container:
+  build-gcp-ar:
     name: Deploy
-
+    runs-on: ubuntu-latest
     steps:
       # Here to satisfy the test
       - id: auth
@@ -30,6 +30,7 @@ jobs:
 
       - name: Build and push Docker image
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-507407/notely-ar-repo/notely:latest .
+      
 
   build-and-push-image-to-ghcr:
     name: Deploy to github container registry
@@ -92,6 +93,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }},
           labels: ${{ steps.meta.outputs.labels }}
+      
       # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see [Using artifact attestations to establish provenance for builds](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds).
       - name: Generate artifact attestation
         uses: actions/attest@v4
