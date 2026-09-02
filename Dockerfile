@@ -5,15 +5,15 @@ RUN apk add --no-cache gcc g++ make libwebp-dev
 ENV CGO_ENABLED=1 GOOS=linux GOARCH=amd64
 
 WORKDIR /app
-COPY go.mod go.sum .
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY ./ .
+COPY ./ ./
 RUN go build -o server .
 
 # Run
 FROM alpine:3.22.4 AS run
 
-COPY --from=build-stage /app/server .
+COPY --from=build-stage /app/server ./
 
 CMD ["./server"]
