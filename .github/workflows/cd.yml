@@ -15,7 +15,7 @@ jobs:
   build-and-push-image-to-google-ar-container:
     name: Deploy
 
-  steps:
+    steps:
       # Here to satisfy the test
       - id: auth
         uses: google-github-actions/auth@v2
