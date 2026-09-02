@@ -12,13 +12,22 @@ env:
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
-  build-gcp-ar:
-    name: Deploy
+  build-and-push-image-to-ghcr:
+    name: Deploy to github container registry
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v6
 
@@ -39,32 +48,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Use gcloud CLI
-        run: gcloud info
-
-      - name: Build and push Docker image
-        run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-507407/notely-ar-repo/notely:latest .
-
-      - name: Deploy to Cloud run
-        run: gcloud run deploy notely --image us-central1-docker.pkg.dev/notely-507407/notely-ar-repo/notely:latest --region us-central1 --allow-unauthenticated --project notely-507407 --max-instances=4
-      
-
-  build-and-push-image-to-ghcr:
-    name: Deploy to github container registry
-    runs-on: ubuntu-latest
-    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
-    
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
