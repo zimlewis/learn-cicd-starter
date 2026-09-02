@@ -5,6 +5,7 @@ import (
 	"embed"
 	"io"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"time"
@@ -95,6 +96,6 @@ func main() {
 		ReadHeaderTimeout: time.Millisecond * 100,
 	}
 
-	log.Printf("Serving")
+	slog.Info("Server is serving", slog.String("port", port))
 	log.Fatal(srv.ListenAndServe())
 }
