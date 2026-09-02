@@ -15,8 +15,6 @@ jobs:
   build-and-push-image-to-ghcr:
     name: Deploy to github container registry
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
