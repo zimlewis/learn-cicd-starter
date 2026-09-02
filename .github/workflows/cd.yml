@@ -16,6 +16,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
       # Here to satisfy the test
       - id: auth
         uses: google-github-actions/auth@v2
